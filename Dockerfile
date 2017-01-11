@@ -40,11 +40,11 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh  \
     && ln -s /usr/local/apache-maven-3.3.9/bin/mvn /usr/local/bin/mvn \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get update  -yqq \
-    && apt-get install  -yqq --no-install-recommends nodejs \
+    && apt-get install -yqq --no-install-recommends nodejs \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update  -yqq \
-    && apt-get install  -yqq --no-install-recommends yarn \
+    && apt-get install -yqq --no-install-recommends yarn
 
 ENV ZEPPELIN_PORT 8080
 ENV ZEPPELIN_HOME /usr/zeppelin
