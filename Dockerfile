@@ -37,12 +37,14 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh  \
     && rm ~/anaconda.sh \
     && wget http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz \
     && tar -zxf apache-maven-3.3.9-bin.tar.gz -C /usr/local/ \
-    && ln -s /usr/local/apache-maven-3.3.9/bin/mvn /usr/local/bin/mvn
+    && ln -s /usr/local/apache-maven-3.3.9/bin/mvn /usr/local/bin/mvn \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-get update  -yqq \
+    && apt-get install  -yqq --no-install-recommends nodejs \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update  -yqq \
-    && apt-get install  -yqq --no-install-recommends nodejs yarn
+    && apt-get install  -yqq --no-install-recommends yarn \
 
 ENV ZEPPELIN_PORT 8080
 ENV ZEPPELIN_HOME /usr/zeppelin
@@ -54,10 +56,10 @@ ENV MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=1024m"
 RUN  git clone https://github.com/apache/zeppelin.git /usr/src/zeppelin \
     && cd /usr/src/zeppelin \
     && dev/change_scala_version.sh "2.11" \
-    && mkdir -m 777 zeppelin-web/bower_components
-    && echo '{ "allow_root": true }' > /root/.bowerrc
+    && mkdir -m 777 zeppelin-web/bower_components \
+    && echo '{ "allow_root": true }' > /root/.bowerrc \
     && cd /usr/src/zeppelin \
-    && mvn -Pbuild-distr --batch-mode package -DskipTests -Pscala-2.11 -Ppyspark -Phadoop-2.7 \
+    && mvn -e -Pbuild-distr --batch-mode package -DskipTests -Pscala-2.11 -Ppyspark -Phadoop-2.7 \
     && tar xvf /usr/src/zeppelin/zeppelin-distribution/target/zeppelin*.tar.gz -C /usr/ \
     && mv /usr/zeppelin* $ZEPPELIN_HOME \
     && mkdir -p $ZEPPELIN_HOME/logs \
