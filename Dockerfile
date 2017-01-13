@@ -4,7 +4,7 @@
 # SOURCE: https://github.com/nathanscully/zeppelin-kube
 
 # Base image from spark
-FROM gettyimages:spark:2.0.2-hadoop-2.7
+FROM gettyimages/spark:2.0.2-hadoop-2.7
 MAINTAINER Nathan SCULLY <nathan@oneflare.com>
 
 # Never prompts the user for choices on installation/configuration of packages
@@ -13,7 +13,7 @@ ENV TERM linux
 
 # Deps
 RUN set -ex \
-    && buildDeps='git build-essential pkg-config libglib2.0-0 libxext6 libsm6 libxrender1 libpq-dev' \
+    && buildDeps='git build-essential pkg-config libglib2.0-0 libxext6 libsm6 libxrender1 libpq-dev gcc' \
     && apt-get update -yqq \
     && apt-get install -yqq --no-install-recommends \
         $buildDeps \
@@ -35,13 +35,13 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
     && ln -s /usr/local/apache-maven-3.3.9/bin/mvn /usr/local/bin/mvn
 
 ENV PATH /opt/conda/bin:$PATH
-
-RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib seaborn nltk psycopg2 pytz simplejson sqlalchemy boto gensim' \
+#Install python dependencies. Mix of conda and pip due to conda not having everything.
+RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psycopg2 pytz simplejson sqlalchemy boto gensim' \
+    && conda install nomkl \
     && conda install $condaDeps -y \
-    && conda install -c conda-forge geopandas  -y \
     && pip install --upgrade pip \
     && pip install --ignore-installed setuptools \
-    && pipDeps='abba tensorflow progressbar2 sqlalchemy-redshift statsmodels rtree geopy descartes pysal' \
+    && pipDeps='abba tensorflow progressbar2 sqlalchemy-redshift statsmodels' \
     && pip install --upgrade $pipDeps \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get update  -yqq \
@@ -69,8 +69,9 @@ RUN  git clone https://github.com/apache/zeppelin.git /usr/src/zeppelin \
     && tar xvf /usr/src/zeppelin/zeppelin-distribution/target/zeppelin*.tar.gz -C /usr/ \
     && mv /usr/zeppelin* $ZEPPELIN_HOME \
     && mkdir -p $ZEPPELIN_HOME/logs \
-    && mkdir -p $ZEPPELIN_HOME/run \
-    && apt-get autoremove \
+    && mkdir -p $ZEPPELIN_HOME/run
+#clean up
+RUN apt-get autoremove \
     && apt-get remove --purge -yqq $buildDeps yarn nodejs npm \
     && apt-get clean \
     && rm -rf \
