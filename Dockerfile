@@ -41,7 +41,7 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
     && conda install $condaDeps -y \
     && pip install --upgrade pip \
     && pip install --ignore-installed setuptools \
-    && pipDeps='abba tensorflow progressbar2 sqlalchemy-redshift statsmodels' \
+    && pipDeps='abba tensorflow progressbar2 sqlalchemy-redshift statsmodels awscli' \
     && pip install --upgrade $pipDeps \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get update  -yqq \
@@ -89,4 +89,5 @@ RUN apt-get autoremove \
 
 WORKDIR $ZEPPELIN_HOME
 COPY startup/entrypoint.sh .
-CMD ["entrypoint.sh"]
+RUN chmod +x "./entrypoint.sh"
+ENTRYPOINT ["./entrypoint.sh"]
