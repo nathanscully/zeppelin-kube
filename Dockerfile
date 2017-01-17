@@ -59,7 +59,7 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update  -yqq \
     && apt-get install -yqq --no-install-recommends yarn \
-    && export PYTHONPATH="$(conda info --root)/lib/python3.5"
+    && export PYTHONPATH="$(conda info --root)/lib/python3.5" \
     && git clone https://github.com/apache/zeppelin.git /usr/src/zeppelin \
     && cd /usr/src/zeppelin \
     && dev/change_scala_version.sh "2.11" \
@@ -70,7 +70,7 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
     && tar xvf /usr/src/zeppelin/zeppelin-distribution/target/zeppelin*.tar.gz -C /usr/ \
     && mv /usr/zeppelin* $ZEPPELIN_HOME \
     && mkdir -p $ZEPPELIN_HOME/logs \
-    && mkdir -p $ZEPPELIN_HOME/run
+    && mkdir -p $ZEPPELIN_HOME/run \
     && apt-get autoremove \
     && apt-get remove --purge -yqq $buildDeps yarn nodejs npm \
     && apt-get clean \
