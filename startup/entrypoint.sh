@@ -5,7 +5,7 @@
 
 : "${AWS_SECRET_ACCESS_KEY?You need to set AWS_SECRET_ACCESS_KEY}"
 : "${AWS_ACCESS_KEY_ID?You need to set AWS_ACCESS_KEY_ID}"
-: "${ZEPPELIN_CONF_S3_BUCKET?You need to set SECERETS_BUCKET}"
+: "${ZEPPELIN_CONF_S3_BUCKET?You need to set ZEPPELIN_CONF_S3_BUCKET}"
 
 if [[ -n ${AWS_SECRET_ACCESS_KEY} ]] && [[ -n ${AWS_ACCESS_KEY_ID} ]] && [[ -n ${ZEPPELIN_CONF_S3_BUCKET} ]]; then
   echo "Cloning zeppelin config directory from S3..."
