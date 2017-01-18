@@ -84,7 +84,7 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
         /root/.m2 \
         /root/.npm \
         /root/.cache \
-        /usr/src/zeppelin
+        /usr/src/zeppelin \
     && conda clean --tarballs --source-cache --index-cache -y
 
 WORKDIR $ZEPPELIN_HOME
