@@ -34,8 +34,9 @@ RUN set -ex \
     && tar -zxf apache-maven-3.3.9-bin.tar.gz -C /usr/local/ \
     && ln -s /usr/local/apache-maven-3.3.9/bin/mvn /usr/local/bin/mvn
 
-ENV PATH /opt/conda/bin:$PATH
 
+
+ENV PATH /opt/conda/bin:$PATH
 ENV ZEPPELIN_PORT 8080
 ENV ZEPPELIN_HOME /usr/zeppelin
 ENV ZEPPELIN_CONF_DIR $ZEPPELIN_HOME/conf
@@ -59,7 +60,6 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update  -yqq \
     && apt-get install -yqq --no-install-recommends yarn \
-    && export PYTHONPATH="$(conda info --root)/lib/python3.5" \
     && git clone https://github.com/apache/zeppelin.git /usr/src/zeppelin \
     && cd /usr/src/zeppelin \
     && dev/change_scala_version.sh "2.11" \
@@ -85,7 +85,7 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
         /root/.npm \
         /root/.cache \
         /usr/src/zeppelin
-    #&& conda clean --tarballs --source-cache --index-cache -y
+    && conda clean --tarballs --source-cache --index-cache -y
 
 WORKDIR $ZEPPELIN_HOME
 COPY startup/entrypoint.sh .
