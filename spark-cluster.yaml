@@ -57,11 +57,6 @@ spec:
             - containerPort: 7077
             - containerPort: 8080
           args: ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
-          # env:
-          #  - name: SPARK_MASTER_PORT
-          #    value: "7077"
-          #  - name: SPARK_MASTER_HOST
-          #    value: "spark-master"
         - name: spark-worker
           image: gettyimages/spark:2.0.2-hadoop-2.7
           ports:
