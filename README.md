@@ -70,3 +70,5 @@ These secrets can be added by creating a file like this (be sure to replace the 
 Then running:
 
     $ kubectl create -f zeppelin-deploy-secrets.yaml
+    
+For great profit
