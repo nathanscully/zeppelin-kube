@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: spark-worker
-          image: gettyimages/spark:2.0.2-hadoop-2.7
+          image: nathanscully/zeppelin-kube
           resources:
             limits:
               cpu: 1000m
@@ -21,4 +21,5 @@ spec:
               memory: 150Mi
           ports:
             - containerPort: 8081
-          args: ["bin/spark-class", "org.apache.spark.deploy.worker.Worker","spark://sparkmaster:7077"]
+          # args: ["bin/spark-class", "org.apache.spark.deploy.worker.Worker","spark://sparkmaster:7077"]
+          command: ["/bin/bash", "/usr/spark-2.0.2/bin/spark-class", "org.apache.spark.deploy.worker.Worker","spark://sparkmaster:7077"]

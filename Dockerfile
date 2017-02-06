@@ -19,15 +19,15 @@ RUN set -ex \
     && apt-get clean \
     && apt-get install -yqq --no-install-recommends \
         $buildDeps \
-        apt-utils \
         apt-transport-https \
-        wget \
-        ca-certificates \
+        apt-utils \
         bzip2 \
-        libfontconfig \
-        vim \
-        telnet \
+        ca-certificates \
         curl \
+        libfontconfig \
+        telnet \
+        vim \
+        wget \
     && echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
     && wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.1.11-Linux-x86_64.sh -O ~/miniconda.sh \
     && /bin/bash ~/miniconda.sh -b -p /opt/conda \

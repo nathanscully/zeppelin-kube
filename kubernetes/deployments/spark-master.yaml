@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
         - name: spark-master
-          image: gettyimages/spark:2.0.2-hadoop-2.7
+          image: nathanscully/zeppelin-kube
           resources:
             limits:
               cpu: 500m
