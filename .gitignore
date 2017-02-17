@@ -1,3 +1,5 @@
 zeppelin-deploy-secrets.yaml
 
 conf
+
+kubernetes/secrets

@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: oneflare/insights-zeppelin-nginx:latest
+          resources:
+            limits:
+              cpu: 50m
+              memory: 50Mi
+            requests:
+              cpu: 20m
+              memory: 20Mi
+          ports:
+            - containerPort: 80
+          livenessProbe:
+              httpGet:
+                path: /
+                port: 80
+              initialDelaySeconds: 120
+              timeoutSeconds: 5
+      imagePullSecrets:
+      - name: oneflaredockerhub
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: nginx
+  type: LoadBalancer

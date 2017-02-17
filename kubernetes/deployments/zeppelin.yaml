@@ -1,0 +1,59 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zeppelin
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zeppelin
+    spec:
+      containers:
+        - name: zeppelin
+          image: oneflare/insights-zeppelin-spark:latest
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 4000Mi
+            requests:
+              cpu: 1000m
+              memory: 1000Mi
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          env:
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zeppelin-deploy-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: zeppelin-deploy-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: ZEPPELIN_CONF_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: zeppelin-deploy-secrets
+                  key: ZEPPELIN_CONF_S3_BUCKET
+          args: ["zeppelin"]
+      imagePullSecrets:
+      - name: oneflaredockerhub
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zeppelin-service
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+    - port: 8081
+      targetPort: 8081
+      name: socket
+  selector:
+    app: zeppelin
+  # type: LoadBalancer

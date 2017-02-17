@@ -1,0 +1,8 @@
+.dockerignore
+.git/
+.gitignore
+circle.yaml
+Dockerfile
+kubernetes/
+nginx/
+README.md
