@@ -9,7 +9,7 @@ dependencies:
 
 test:
   override:
-    - docker run -d -p 8080:8080 nathanscully/zeppelin-kube; sleep 60
+    - docker run -d -p 8080:8080 nathanscully/zeppelin-kube zeppelin; sleep 60
     - curl --retry 10 --retry-delay 5 -v http://localhost:8080
 
 deployment:
