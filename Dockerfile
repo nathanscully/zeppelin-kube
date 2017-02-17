@@ -50,12 +50,12 @@ ENV MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=1024m"
 # 1. Install python dependencies. Mix of conda and pip due to conda not having everything.
 # 2. Zeppelin (we need the bowerrc line due to Docker running things as root)
 # 3. Cleanup
-RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psycopg2 pytz simplejson sqlalchemy boto gensim' \
+RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psycopg2 pytz simplejson sqlalchemy gensim' \
     && conda install -q nomkl \
     && conda install -q $condaDeps -y \
     && pip install -q --upgrade pip \
     && pip install -q --ignore-installed setuptools \
-    && pipDeps='abba tensorflow progressbar2 sqlalchemy-redshift statsmodels awscli' \
+    && pipDeps='abba tensorflow progressbar2 tqdm sqlalchemy-redshift statsmodels==0.8rc1 awscli boto3 seaborn' \
     && pip install -q --upgrade $pipDeps \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get update  -yqq \
