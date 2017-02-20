@@ -39,6 +39,13 @@ spec:
                   name: zeppelin-deploy-secrets
                   key: ZEPPELIN_CONF_S3_BUCKET
           args: ["zeppelin"]
+          volumeMounts:
+          - mountPath: "/usr/zeppelin/conf"
+            name: zeppelin-pvc
+      volumes:
+        - name: zeppelin-pvc
+          persistentVolumeClaim:
+            claimName: zeppelin-pvc
       imagePullSecrets:
       - name: oneflaredockerhub
 ---
@@ -56,4 +63,3 @@ spec:
       name: socket
   selector:
     app: zeppelin
-  # type: LoadBalancer

@@ -14,10 +14,10 @@ ENV TERM linux
 # Deps
 RUN set -ex \
     && buildDeps='git build-essential pkg-config libglib2.0-0 libxext6 libsm6 libxrender1 libpq-dev gcc' \
-    && apt-get update -yqq \
+    && apt-get update -y \
     && apt-get remove --purge -yqq python3 python3-setuptools \
     && apt-get clean \
-    && apt-get install -yqq --no-install-recommends \
+    && apt-get install -y --no-install-recommends \
         $buildDeps \
         apt-transport-https \
         apt-utils \
@@ -58,12 +58,12 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
     && pipDeps='abba tensorflow progressbar2 tqdm sqlalchemy-redshift statsmodels==0.8rc1 awscli boto3 seaborn' \
     && pip install -q --upgrade $pipDeps \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get update  -yqq \
-    && apt-get install -yqq --no-install-recommends nodejs \
+    && apt-get update  -y \
+    && apt-get install -y --no-install-recommends nodejs \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && apt-get update -yqq \
-    && apt-get install -yqq --no-install-recommends yarn \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends yarn \
     && git clone https://github.com/apache/zeppelin.git /usr/src/zeppelin \
     && cd /usr/src/zeppelin \
     && dev/change_scala_version.sh "2.11" \
@@ -77,8 +77,8 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
     && mkdir -p $ZEPPELIN_HOME/run \
     && cd /usr \
     && conda clean --tarballs --source-cache --index-cache -y \
-    && apt-get autoremove  -yqq \
-    && apt-get remove --purge -yqq $buildDeps yarn nodejs npm \
+    && apt-get autoremove  -y \
+    && apt-get remove --purge -y $buildDeps yarn nodejs npm \
     && apt-get clean \
     && rm -rf \
         /var/lib/apt/lists/* \
@@ -92,7 +92,9 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
         /root/.cache \
         /usr/src/zeppelin
 
-WORKDIR $ZEPPELIN_HOME
+WORKDIR /usr/zeppelin
 COPY startup/entrypoint.sh .
-RUN chmod +x "./entrypoint.sh"
+COPY startup/copy_config.sh .
+RUN chmod +x "./entrypoint.sh" \
+    && chmod +x "./copy_config.sh" \
 ENTRYPOINT ["./entrypoint.sh"]

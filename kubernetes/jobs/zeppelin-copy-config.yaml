@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: zeppelin-copy-config
+spec:
+  template:
+    metadata:
+      name: zeppelin-copy-config
+    spec:
+      containers:
+      - name: zeppelin-copy-config
+        image: oneflare/insights-zeppelin-spark:latest
+        volumeMounts:
+        - mountPath: "/tmp/conf"
+          name: zeppelin-pvc
+        command: ["./copy_config.sh"]
+      restartPolicy: Never
+      imagePullSecrets:
+      - name: oneflaredockerhub

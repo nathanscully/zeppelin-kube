@@ -23,7 +23,6 @@ spec:
             - containerPort: 7077
             - containerPort: 8080
           args: ["spark-master"]
-          # args: ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
         - name: spark-ui-proxy
           image: elsonrodriguez/spark-ui-proxy:1.0
           ports:
@@ -56,7 +55,6 @@ spec:
       targetPort: 80
   selector:
     app: spark-master
-  # type: LoadBalancer
 ---
 kind: Service
 apiVersion: v1
