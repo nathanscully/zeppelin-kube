@@ -96,5 +96,5 @@ WORKDIR /usr/zeppelin
 COPY startup/entrypoint.sh .
 COPY startup/copy_config.sh .
 RUN chmod +x "./entrypoint.sh" \
-    && chmod +x "./copy_config.sh" \
+    && chmod +x "./copy_config.sh"
 ENTRYPOINT ["./entrypoint.sh"]
