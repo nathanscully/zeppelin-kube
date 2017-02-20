@@ -17,3 +17,7 @@ spec:
       restartPolicy: Never
       imagePullSecrets:
       - name: oneflaredockerhub
+      volumes:
+        - name: zeppelin-pvc
+          persistentVolumeClaim:
+            claimName: zeppelin-pvc
