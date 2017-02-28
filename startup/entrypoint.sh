@@ -5,6 +5,7 @@
 function add_aws_to_spark_env {
   echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> /usr/spark-2.0.2/conf/spark-env.sh
   echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> /usr/spark-2.0.2/conf/spark-env.sh
+  aws s3 sync s3://${ZEPPELIN_CONF_S3_BUCKET}/spark ${SPARK_HOME}/conf
 }
 
 if [ "$1" = "zeppelin" ] ; then
