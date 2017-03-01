@@ -3,3 +3,6 @@ zeppelin-deploy-secrets.yaml
 conf
 
 kubernetes/secrets
+metastore_db/
+
+*.log

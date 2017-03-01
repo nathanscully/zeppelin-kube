@@ -70,7 +70,7 @@ RUN condaDeps='cython scipy scikit-learn scikit-image pandas matplotlib nltk psy
     && mkdir -m 777 zeppelin-web/bower_components \
     && echo '{ "allow_root": true }' > /root/.bowerrc \
     && cd /usr/src/zeppelin \
-    && mvn -e -Pbuild-distr --batch-mode package -DskipTests -Pscala-2.11 -Ppyspark -Phadoop-2.7 -pl 'angular,jdbc,markdown,python,shell,spark,spark-dependencies,zeppelin-display,zeppelin-distribution,zeppelin-interpreter,zeppelin-server,zeppelin-web,zeppelin-zengine' \
+    && mvn -T 1C -e -Pbuild-distr --batch-mode package -DskipTests -Pscala-2.11 -Ppyspark -Phadoop-2.7 -pl 'angular,jdbc,markdown,python,shell,spark,spark-dependencies,zeppelin-display,zeppelin-distribution,zeppelin-interpreter,zeppelin-server,zeppelin-web,zeppelin-zengine' \
     && tar xvf /usr/src/zeppelin/zeppelin-distribution/target/zeppelin*.tar.gz -C /usr/ \
     && mv /usr/zeppelin* $ZEPPELIN_HOME \
     && mkdir -p $ZEPPELIN_HOME/logs \
