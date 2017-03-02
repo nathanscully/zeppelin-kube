@@ -5,7 +5,7 @@ machine:
 dependencies:
   override:
     - docker info
-    - docker build --rm=false -t nathanscully/zeppelin-kube .
+    - docker build --rm=false -t nathanscully/zeppelin-kube:$CIRCLE_SHA1 .
 
 test:
   override:
@@ -14,7 +14,6 @@ test:
 
 deployment:
   hub:
-    branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push nathanscully/zeppelin-kube
+      - docker push nathanscully/zeppelin-kube:$CIRCLE_SHA1

@@ -3,9 +3,9 @@
 # The AWS ID & Secrets and bucket name are required to be passed in at run time as Environmental Variables to clone the bucket contents down to the zeppelin/conf folder.
 
 function add_aws_to_spark_env {
+  aws s3 sync s3://${ZEPPELIN_CONF_S3_BUCKET}/spark ${SPARK_HOME}/conf
   echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> ${SPARK_HOME}/conf/spark-env.sh
   echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> ${SPARK_HOME}/conf/spark-env.sh
-  aws s3 sync s3://${ZEPPELIN_CONF_S3_BUCKET}/spark ${SPARK_HOME}/conf
 }
 
 if [ "$1" = "zeppelin" ] ; then
@@ -28,5 +28,5 @@ fi
 if [ "$1" = "spark-worker" ] ; then
   add_aws_to_spark_env
   echo "Starting up Spark Worker..."
-  ($SPARK_HOME/bin/spark-class org.apache.spark.deploy.worker.Worker spark://sparkmaster:7077)
+  ($SPARK_HOME/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark.oneflare.io:7077)
 fi
