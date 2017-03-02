@@ -3,8 +3,8 @@
 # The AWS ID & Secrets and bucket name are required to be passed in at run time as Environmental Variables to clone the bucket contents down to the zeppelin/conf folder.
 
 function add_aws_to_spark_env {
-  echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> /usr/spark-2.0.2/conf/spark-env.sh
-  echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> /usr/spark-2.0.2/conf/spark-env.sh
+  echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> ${SPARK_HOME}/conf/spark-env.sh
+  echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> ${SPARK_HOME}/conf/spark-env.sh
   aws s3 sync s3://${ZEPPELIN_CONF_S3_BUCKET}/spark ${SPARK_HOME}/conf
 }
 

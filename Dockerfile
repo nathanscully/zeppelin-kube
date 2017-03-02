@@ -4,7 +4,7 @@
 # SOURCE: https://github.com/nathanscully/zeppelin-kube
 
 # Base image from spark
-FROM gettyimages/spark:2.0.2-hadoop-2.7
+FROM gettyimages/spark:2.1.0-hadoop-2.7
 MAINTAINER Nathan SCULLY <nathan@oneflare.com>
 
 # Never prompts the user for choices on installation/configuration of packages
