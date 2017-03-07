@@ -11,7 +11,8 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: oneflare/insights-zeppelin-nginx:latest
+          image: oneflare/insights-zeppelin-nginx:20170303-4
+          imagePullPolicy: Always
           resources:
             limits:
               cpu: 50m
@@ -21,12 +22,14 @@ spec:
               memory: 20Mi
           ports:
             - containerPort: 80
-          livenessProbe:
-              httpGet:
-                path: /
-                port: 80
-              initialDelaySeconds: 120
-              timeoutSeconds: 5
+            - containerPort: 443
+            - containerPort: 7077
+          # livenessProbe:
+          #     httpGet:
+          #       path: /
+          #       port: 80
+          #     initialDelaySeconds: 30
+          #     timeoutSeconds: 5
       imagePullSecrets:
       - name: oneflaredockerhub
 ---
@@ -38,6 +41,13 @@ spec:
   ports:
     - port: 80
       targetPort: 80
+      name: http
+    - port: 443
+      targetPort: 443
+      name: https
+    - port: 7077
+      targetPort: 7077
+      name: spark-port
   selector:
     app: nginx
   type: LoadBalancer

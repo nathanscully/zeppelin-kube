@@ -11,50 +11,44 @@ spec:
     spec:
       containers:
         - name: spark-master
-          image: oneflare/insights-zeppelin-spark:latest
+          image: oneflare/insights-zeppelin-spark:20170303-1
           resources:
             limits:
               cpu: 500m
               memory: 1000Mi
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
           ports:
+            - containerPort: 4040
+            # - containerPort: 6066
             - containerPort: 7077
             - containerPort: 8080
+          env:
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zeppelin-deploy-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: zeppelin-deploy-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: ZEPPELIN_CONF_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: zeppelin-deploy-secrets
+                  key: ZEPPELIN_CONF_S3_BUCKET
+            - name: SPARK_PUBLIC_DNS
+              value: spark.monkey.io
+            - name: SPARK_MASTER_HOST
+              value: 0.0.0.0
+            - name: SPARK_MASTER_PORT
+              value: '7077'
           args: ["spark-master"]
-        - name: spark-ui-proxy
-          image: elsonrodriguez/spark-ui-proxy:1.0
-          ports:
-            - containerPort: 80
-          resources:
-            limits:
-              cpu: 100m
-              memory: 100Mi
-            requests:
-              cpu: 50m
-              memory: 50Mi
-          args:
-            - sparkmaster:8080
-          livenessProbe:
-              httpGet:
-                path: /
-                port: 80
-              initialDelaySeconds: 120
-              timeoutSeconds: 5
       imagePullSecrets:
       - name: oneflaredockerhub
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: spark-ui-proxy
-spec:
-  ports:
-    - port: 80
-      targetPort: 80
-  selector:
-    app: spark-master
 ---
 kind: Service
 apiVersion: v1
@@ -62,6 +56,9 @@ metadata:
   name: sparkmaster
 spec:
   ports:
+    # - port: 6066
+    #   targetPort: 6066
+    #   name: rest
     - port: 7077
       targetPort: 7077
       name: spark

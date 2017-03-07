@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sparkmaster-elb
+spec:
+  ports:
+    - port: 6066
+      targetPort: 6066
+      name: rest
+    - port: 7077
+      targetPort: 7077
+      name: spark
+    - port: 8080
+      targetPort: 8080
+      name: http
+  selector:
+    app: spark-master
+  type: LoadBalancer
